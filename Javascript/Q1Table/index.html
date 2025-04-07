@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Table</title>
+    <style>
+      table {
+        border: none;
+        border-collapse: collapse;
+        padding: 1em;
+        width: 60%;
+      }
+    
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Table for UserData</h1>
+      <div>
+        <input type="text" placeholder="Enter Your Task" id="addTask" />
+        <button id="add">Add</button>
+        <input type="text" placeholder="Edit Your Task" id="editTask" />
+        <button id="edit">Edit</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Heading</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <script>
+      let addTask = document.getElementById("addTask");
+      let editTask = document.getElementById("editTask");
+      let addBtn = document.getElementById("add");
+      let editBtn = document.getElementById("edit");
+      let tbody = document.getElementById("tbody");
+
+      let editTarget = null;
+
+      addBtn.onclick = function () {
+        let addValue = addTask.value.trim();
+        if (addValue === "") return;
+
+        let row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${addValue}</td>
+          <td><button class="editBtn">Edit</button></td>
+          <td><button class="deleteBtn">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+        addTask.value = "";
+        row.querySelector(".deleteBtn").onclick = function () {
+          row.remove();
+        };
+        row.querySelector(".editBtn").onclick = function () {
+          editTask.value = row.cells[0].innerText;
+          editTarget = row;
+        };
+      };
+
+      editBtn.onclick = function () {
+        if (editTarget && editTask.value.trim() !== "") {
+          editTarget.cells[0].innerText = editTask.value.trim();
+          editTask.value = "";
+          editTarget = null;
+        }
+      };
+    </script>
+  </body>
+</html>
